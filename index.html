@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Type Master - Fast Typing Game for Keyboard Training</title>
+  <meta name="description" content="Type Master is a fast, fun, and challenging typing game to improve your keyboard skills. Choose your difficulty and beat your high score!" />
+  <meta name="keywords" content="typing game, type master, keyboard training, typing speed, typing practice, typing test, improve typing, typing challenge, fast typing, online typing game" />
+  <meta name="author" content="Type Master" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://typemaster.example.com/" />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://typemaster.example.com/" />
+  <meta property="og:title" content="Type Master - Fast Typing Game for Keyboard Training" />
+  <meta property="og:description" content="Type Master is a fast, fun, and challenging typing game to improve your keyboard skills. Choose your difficulty and beat your high score!" />
+  <meta property="og:image" content="https://typemaster.example.com/og-image.png" />
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://typemaster.example.com/" />
+  <meta property="twitter:title" content="Type Master - Fast Typing Game for Keyboard Training" />
+  <meta property="twitter:description" content="Type Master is a fast, fun, and challenging typing game to improve your keyboard skills. Choose your difficulty and beat your high score!" />
+  <meta property="twitter:image" content="https://typemaster.example.com/og-image.png" />
+  <link rel="icon" href="favicon-16x16.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f4f6f8;
+      --fg: #333;
+      --card-bg: #fff;
+      --accent: #0077cc;
+      --accent-hover: #005fa3;
+      --error: #e53935;
+      --success: #43a047;
+      --icon-color: #000;
+      --key-bg: #e0e5ec;
+      --stat-bg: #f0f4fb;
+      --keyboard-bg: rgb(255, 255, 255);
+      --button-gradient: linear-gradient(145deg, #0088e0, #005fa3);
+      --button-shadow: 6px 6px 12px rgba(0,0,0,0.2), -6px -6px 12px #ffffff;
+      --restart-shadow: 6px 6px 12px rgba(0,0,0,0.2);
+    }
+    [data-theme='dark'] {
+      --bg: #131315;
+      --fg: #eee;
+      --card-bg: #2c2b2e;
+      --keyboard-bg: rgb(53, 53, 56);
+      --accent: #64b5f6;
+      --accent-hover: #428ac7;
+      --icon-color: #fff;
+      --key-bg: #464646;
+      --stat-bg: #333;
+      --button-gradient: linear-gradient(145deg, #2196f3, #0d47a1);
+      --button-shadow: 6px 6px 12px rgba(0,0,0,0.5), -6px -6px 12px #2a2a2a;
+      --restart-shadow: 6px 6px 12px rgba(0,0,0,0.5);
+    }
+    body, html {
+      height: 100%; width: 100%;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s, color 0.3s;
+    }
+    #wrapper {
+      width: 90vw; max-width: 480px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2), inset 0 -2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      animation: fadeIn 0.5s ease;
+      position: relative;
+    }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    header {
+      padding: 20px;
+      background: var(--card-bg);
+      display: flex; justify-content: space-between; align-items: center;
+      /* Dual highlight effect */
+      background-image:
+        linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 10%),
+        linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+      background-blend-mode: overlay;
+      /* subtle bottom shadow */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1), inset 0 -1px 0 rgba(0,0,0,0.1);
+    }
+    header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem; font-weight: 600;
+    }
+    #controls { display: flex; gap: 24px; }
+    .icon-wrapper { display: flex; flex-direction: column; align-items: center; }
+    .btn-icon {
+      width: 48px; height: 48px; padding: 6px;
+      border: none; background: none;
+      cursor: pointer;
+    }
+    .btn-icon svg {
+      width: 100%; height: 100%;
+      color: var(--icon-color);
+      transition: color 0.2s;
+    }
+    .btn-icon:hover svg { color: var(--accent-hover); }
+    .icon-label { margin-top: 4px; font-size: 0.75rem; color: var(--fg); }
+    .content { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+    .panel { display: flex; flex-direction: column; gap: 8px; }
+    label { font-weight: 600; font-size: 0.9rem; }
+    select {
+      cursor: pointer; font-size: 1rem;
+      border-radius: 8px; border: none;
+      padding: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    #startBtn {
+      background: var(--button-gradient);
+      color: #fff; font-weight: 600;
+      box-shadow: var(--button-shadow);
+      cursor: pointer; transition: transform 0.1s;
+      border: none; padding: 12px;
+      font-size: 1rem; border-radius: 8px;
+    }
+    #startBtn:hover { transform: translateY(-2px); }
+    #startBtn:active { transform: translateY(0); }
+    #restartBtn {
+      background: var(--button-gradient);
+      color: #fff; font-weight: 600;
+      box-shadow: var(--restart-shadow);
+      cursor: pointer; transition: transform 0.1s;
+      border: none; padding: 12px;
+      font-size: 1rem; border-radius: 8px;
+    }
+    #restartBtn:hover { transform: translateY(-2px); }
+    #restartBtn:active { transform: translateY(0); }
+    .action-btn {
+      background: var(--button-gradient);
+      color: #fff; font-weight: 600;
+      box-shadow: var(--button-shadow);
+      cursor: pointer; transition: transform 0.1s;
+      border: none; padding: 12px;
+      font-size: 1rem; border-radius: 8px;
+    }
+    .action-btn:hover { transform: translateY(-2px); }
+    .action-btn:active { transform: translateY(0); }
+    #typingArea {
+      display: none;
+      flex-direction: column; align-items: center; gap: 20px;
+      perspective: 800px;
+    }
+    #currentKey {
+      font-family: 'Poppins', sans-serif;
+      font-size: 3rem; font-weight: 600;
+      padding: 20px; border-radius: 8px;
+      background: var(--key-bg);
+      background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+      background-blend-mode: overlay;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      animation: popIn 0.3s ease;
+      transform-style: preserve-3d;
+    }
+    @keyframes popIn { from{transform:rotateX(90deg);opacity:0;} to{transform:rotateX(0);opacity:1;} }
+    #stats {
+      width: 100%; display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .stat {
+      background: var(--stat-bg);
+      background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0));
+      background-blend-mode: overlay;
+      padding: 10px; border-radius: 6px;
+      text-align: center; font-weight: 600;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .stat.highlight {
+      animation: highlight 0.4s ease;
+      transform: translateY(-4px);
+    }
+    @keyframes highlight { 0%{background:var(--success);}50%{background:var(--stat-bg);}100%{background:var(--success);} }
+    @keyframes errorHighlight { 0%{background:var(--error);}50%{background:var(--stat-bg);}100%{background:var(--error);} }
+    .error-highlight { animation: errorHighlight 0.4s ease; }
+      /* Tutorial Overlay Styles */
+    #tutorialOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+    #tutorialOverlay .step {
+      background: var(--card-bg);
+      color: var(--fg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      max-width: 80%;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      line-height: 1.5;
+      animation: popIn 0.3s ease;
+    }
+    #tutorialNext {
+      display: none;
+      background: var(--button-gradient);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: var(--button-shadow);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    #tutorialOverlay[style*="display: flex"] #tutorialNext {
+      display: inline-block;
+    }
+  /* Tutorial Overlay Styles */
+  #tutorialOverlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+  #tutorialOverlay .step {
+      background: var(--card-bg);
+      color: var(--fg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      max-width: 80%;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      line-height: 1.5;
+      animation: popIn 0.3s ease;
+    }
+  #tutorialNext {
+      display: none;
+      background: var(--button-gradient);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      box-shadow: none; /* remove white shadow */
+    }
+  #tutorialOverlay[style*="display: flex"] #tutorialNext {
+      display: inline-block;
+    }
+  /* Blur wrapper when tutorial active */
+  #wrapper.blurred {
+      filter: blur(4px);
+      transition: filter 0.3s;
+    }
+  /* Flip/zoom out animation for tutorial closing */
+  @keyframes flipOut {
+      0% { transform: rotateX(0) scale(1); opacity: 1; }
+     100% { transform: rotateX(90deg) scale(0); opacity: 0; }
+  }
+#questBar {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--card-bg);
+  color: var(--accent);
+  font-family: 'Poppins',sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  z-index: 1600;
+  gap: 8px;
+  box-sizing: border-box;
+  transition: transform 0.5s;
+}
+
+  #tutorialOverlay.flipOut {
+      animation: flipOut 0.5s ease forwards;
+  }
+  h1 {
+    text-shadow: 0 2px 5px rgba(128, 128, 128, 0.326);
+  }
+    /* Responsive styles */
+    @media (max-width: 700px) {
+      #mainNav {
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 12px 0 10px 0 !important;
+      }
+      #allContent {
+        margin-top: 90px !important;
+      }
+      #landing h1 {
+        font-size: 2rem !important;
+      }
+      #landing p {
+        font-size: 1rem !important;
+      }
+      .landing-btn, #startTypingBtn {
+        width: 90vw !important;
+        max-width: 340px !important;
+        font-size: 1rem !important;
+        padding: 12px 0 !important;
+      }
+      section {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      #wrapper {
+        width: 98vw !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
+      }
+      .content {
+        padding: 10px !important;
+      }
+      #stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+      }
+      .panel {
+        gap: 4px !important;
+      }
+      #privacy > div, #terms > div {
+        padding: 12px 6px !important;
+        font-size: 0.95rem !important;
+      }
+    }
+    @media (max-width: 430px) {
+      #mainNav {
+        font-size: 0.95rem !important;
+        padding: 8px 0 6px 0 !important;
+      }
+      #allContent {
+        margin-top: 110px !important;
+      }
+      #landing h1 {
+        font-size: 1.3rem !important;
+      }
+      #wrapper {
+        width: 100vw !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <!-- Navbar -->
+  <nav id="mainNav" style="width:100vw;max-width:100%;background:var(--card-bg);box-shadow:0 2px 8px rgba(0,0,0,0.07);padding:18px 0 14px 0;display:flex;align-items:center;justify-content:center;gap:32px;position:fixed;top:0;left:0;z-index:1001;">
+    <a href="#landing" style="font-weight:600;font-size:1.1rem;color:var(--fg);text-decoration:none;">Home</a>
+    <button id="showPrivacyNav" class="nav-btn" style="font-weight:600;font-size:1.1rem;color:#fff;background:var(--button-gradient);border:none;cursor:pointer;padding:8px 18px;border-radius:6px;box-shadow:var(--button-shadow);margin-left:8px;">Privacy Policy</button>
+    <button id="showTermsNav" class="nav-btn" style="font-weight:600;font-size:1.1rem;color:#fff;background:var(--button-gradient);border:none;cursor:pointer;padding:8px 18px;border-radius:6px;box-shadow:var(--button-shadow);margin-left:8px;">Terms of Service</button>
+  </nav>
+  <!-- Hideable Content Wrapper -->
+  <div id="allContent" style="display:none;margin-top:70px;">
+    <!-- Landing Page Section -->
+    <section id="landing" style="width:100vw;max-width:100%;background:var(--bg);padding:48px 0 32px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <h1 style="font-family:'Poppins',sans-serif;font-size:2.5rem;font-weight:700;margin-bottom:16px;text-align:center;">Welcome to Type Master</h1>
+      <p style="font-size:1.25rem;max-width:600px;text-align:center;margin-bottom:32px;">Boost your typing speed and accuracy with the ultimate keyboard training game. Choose your difficulty, challenge yourself, and climb the high score leaderboard!</p>
+      <a id="startTypingBtn" href="#wrapper" style="background:var(--button-gradient);color:#fff;font-weight:600;padding:16px 32px;border-radius:8px;text-decoration:none;box-shadow:var(--button-shadow);font-size:1.1rem;transition:background 0.2s;">Start Typing Now</a>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin-top:2.5rem;">
+        <button id="showPrivacy" class="landing-btn" style="background:var(--button-gradient);color:#fff;font-weight:600;padding:12px 28px;border-radius:8px;border:none;box-shadow:var(--button-shadow);font-size:1rem;margin-bottom:12px;cursor:pointer;">Privacy Policy</button>
+        <button id="showTerms" class="landing-btn" style="background:var(--button-gradient);color:#fff;font-weight:600;padding:12px 28px;border-radius:8px;border:none;box-shadow:var(--button-shadow);font-size:1rem;cursor:pointer;">Terms of Service</button>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer style="width:100vw;max-width:100%;background:var(--card-bg);text-align:center;padding:18px 0 14px 0;font-size:1rem;color:var(--fg);font-family:'Poppins',sans-serif; margin-top: 5px;">
+      Made by Koundinya Namuduri
+    </footer>
+    <!-- Privacy Policy Modal -->
+    <section id="privacy" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;">
+      <div style="background:var(--card-bg);padding:32px 24px;border-radius:12px;max-width:700px;width:90vw;box-shadow:0 4px 24px rgba(0,0,0,0.18);position:relative;">
+        <button id="closePrivacy" aria-label="Close" style="position:absolute;top:12px;right:16px;font-size:1.5rem;background:none;border:none;cursor:pointer;color:var(--fg);">&times;</button>
+        <h2 style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:600;margin-bottom:12px;">Privacy Policy</h2>
+        <div style="font-size:1rem;line-height:1.7;color:var(--fg);background:var(--stat-bg);padding:24px 20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <p><strong>Type Master</strong> does not collect any personal information. Your high scores are stored locally in your browser and are never sent to any server. We do not use cookies or tracking technologies. By using this site, you agree to this privacy policy.</p>
+        </div>
+      </div>
+    </section>
+    <!-- Terms of Service Modal -->
+    <section id="terms" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;">
+      <div style="background:var(--card-bg);padding:32px 24px;border-radius:12px;max-width:700px;width:90vw;box-shadow:0 4px 24px rgba(0,0,0,0.18);position:relative;">
+        <button id="closeTerms" aria-label="Close" style="position:absolute;top:12px;right:16px;font-size:1.5rem;background:none;border:none;cursor:pointer;color:var(--fg);">&times;</button>
+        <h2 style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:600;margin-bottom:12px;">Terms of Service</h2>
+        <div style="font-size:1rem;line-height:1.7;color:var(--fg);background:var(--card-bg);padding:24px 20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <p>By using <strong>Type Master</strong>, you agree to use this site for personal, non-commercial purposes only. The game is provided as-is, without warranty of any kind. We are not responsible for any loss or damage resulting from the use of this site. You may not copy, modify, or redistribute the content without permission.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <main id="wrapper" itemscope itemtype="https://schema.org/Game" style="display:none;max-height:calc(100vh - 120px);overflow:auto;">
+  <header>
+  <h1 itemprop="name">Type Master</h1>
+      <div id="controls">
+        <div class="icon-wrapper">
+          <button id="tutorialBtn" class="btn-icon" title="Tutorial">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          </button>
+          <span class="icon-label">Tutorial</span>
+        </div>
+        <div class="icon-wrapper">
+          <button id="themeToggle" class="btn-icon" title="Toggle Theme">
+            <svg id="lightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" fill="currentColor"><path d="M18.44,34.68a18.22,18.22,0,0,1-2.94-.24,18.18,18.18,0,0,1-15-20.86A18.06,18.06,0,0,1,9.59.63,2.42,2.42,0,0,1,12.2.79a2.39,2.39,0,0,1,1,2.41L11.9,3.1l1.23.22A15.66,15.66,0,0,0,23.34,21h0a15.82,15.82,0,0,0,8.47.53A2.44,2.44,0,0,1,34.47,25,18.18,18.18,0,0,1,18.44,34.68ZM10.67,2.89a15.67,15.67,0,0,0-5,22.77A15.66,15.66,0,0,0,32.18,24a18.49,18.49,0,0,1-9.65-.64A18.18,18.18,0,0,1,10.67,2.89Z"/></svg>
+            <svg id="darkIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><g clip-path="url(#a)"><path d="M12 0a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1ZM4.929 3.515a1 1 0 0 0-1.414 1.414l2.828 2.828a1 1 0 0 0 1.414-1.414L4.93 3.515ZM1 11a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2H1ZM18 12a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1ZM17.657 16.243a1 1 0 0 0-1.414 1.414l2.828 2.828a1 1 0 1 0 1.414-1.414l-2.828-2.828ZM7.757 17.657a1 1 0 1 0-1.414-1.414L3.515 19.07a1 1 0 1 0 1.414 1.414l2.828-2.828ZM20.485 4.929a1 1 0 0 0-1.414-1.414l-2.828 2.828a1 1 0 1 0 1.414 1.414l2.828-2.828ZM13 19a1 1 0 1 0-2 0v4a1 1 0 1 0 2 0v-4ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z"/></g><defs><clipPath id="a"><path fill="currentColor" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+          </button>
+          <span id="themeLabel" class="icon-label">Dark Mode</span>
+        </div>
+      </div>
+    </header>
+    <div class="content">
+      <div class="panel">
+        <label for="difficulty">Difficulty</label>
+        <select id="difficulty" name="difficulty" aria-label="Select difficulty"><option value="easy">Easy (2.5s)</option><option value="medium">Medium (1.5s)</option><option value="hard">Hard (.75s)</option></select>
+      </div>
+      <button id="startBtn">Start Training</button>
+      <div id="typingArea" aria-live="polite" style="align-items:center;justify-content:center;">
+        <div id="currentKey" aria-label="Current key to type" style="font-size:4rem;transition:transform 0.2s, color 0.2s;">--</div>
+        <div id="stats" role="region" aria-label="Game stats">
+          <div id="timer" class="stat" aria-label="Time left">Time: --</div>
+          <div id="lives" class="stat" aria-label="Lives left">Lives: --</div>
+          <div id="score" class="stat" aria-label="Current score">Score: --</div>
+          <div id="highScore" class="stat" aria-label="High score">High: --</div>
+        </div>
+        <div class="panel">
+          <button id="pauseBtn" class="action-btn">Pause</button>
+          <button id="resumeBtn" class="action-btn" style="display:none;">Resume</button>
+          <button id="restartBtn">Restart</button>
+        </div>
+        <div id="onscreenKeyboard" style="width:100%;max-width:320px;margin:16px auto 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;"></div>
+      </div>
+      <!-- Satisfying animated background -->
+      <div id="satisfyingBg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;"></div>
+      <audio id="soundCorrect" src="mech-keyboard-02-102918.mp3"></audio>
+      <audio id="soundWrong" src="error-08-206492.mp3"></audio>
+      <audio id="soundStreak" src="beep-6-96243.mp3"></audio>
+    </div>
+  <div id="tutorialOverlay" aria-modal="true" role="dialog">
+    <div id="tutorialText" class="step"></div>
+    <button id="tutorialNext">Next</button>
+  </div>
+  <!-- Falling Letters Container -->
+  <!-- Removed falling letters and word bar -->
+  </main>
+  <div id="coinBar" style="position:fixed;top:16px;right:16px;background:var(--card-bg);color:var(--accent);font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:600;padding:8px 18px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);z-index:1600;display:none;align-items:center;gap:8px;cursor:pointer;transition:transform 0.2s;">
+    <span id="coinIcon" style="font-size:1.3rem;">🪙</span> <span id="coinCount">0</span>
+  </div>
+  <!-- Shop Modal -->
+<div id="shopModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:2000;align-items:center;justify-content:center;">
+  <div style="background:var(--card-bg);padding:32px 24px;border-radius:12px;max-width:400px;width:90vw;box-shadow:0 4px 24px rgba(0,0,0,0.18);position:relative;display:flex;flex-direction:column;align-items:center;">
+    <button id="closeShop" aria-label="Close" style="position:absolute;top:12px;right:16px;font-size:1.5rem;background:none;border:none;cursor:pointer;color:var(--fg);">&times;</button>
+    <h2 style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:600;margin-bottom:12px;"></h2>
+    <div style="width:100%;margin-bottom:18px;text-align:center;">
+      <span style="font-size:1.2rem;color:var(--accent);font-weight:600;">🪙 <span id="shopCoinCount">0</span> coins</span>
+    </div>
+    <button id="buyLife" style="background:var(--success);color:#fff;font-weight:600;padding:10px 24px;border-radius:8px;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.07);font-size:1rem;margin-bottom:12px;cursor:pointer;">Buy 1 Extra Life (20 coins)</button>
+    <button id="buyUpgrade" style="background:var(--accent);color:#fff;font-weight:600;padding:10px 24px;border-radius:8px;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.07);font-size:1rem;cursor:pointer;">Upgrade: +1 Coin per Correct (100 coins)</button>
+    <div id="shopMsg" style="margin-top:16px;font-size:1rem;color:var(--error);"></div>
+  </div>
+</div>
+
+<!-- Quest Bar (centered horizontally) -->
+<div id="questBar" style="margin-left: 15px; width:auto;display:flex;justify-content:center;align-items:center;background:var(--card-bg);color:var(--accent);font-family:'Poppins',sans-serif;font-size:1rem;font-weight:600;padding:8px 18px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);z-index:1600;gap:8px;min-width:220px;max-width:100vw;box-sizing:border-box;transition:transform 0.5s;">
+  <span id="questText"></span>
+  <span id="questStatus" style="color:var(--success);font-weight:700;"></span>
+  <span id="levelText" style="margin-left:auto;color:var(--accent);font-weight:700;"></span>
+</div>
+<!-- Progress bar for quests -->
+<div id="progressBar" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:80vw;max-width:400px;height:18px;background:var(--stat-bg);border-radius:9px;box-shadow:0 2px 8px rgba(0,0,0,0.07);z-index:1600;">
+  <div id="progressFill" style="height:100%;width:0%;background:var(--accent);border-radius:9px;transition:width 0.4s;"></div>
+</div>
+<!-- Sky and clouds background -->
+<div id="skyBg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-2;overflow:hidden;"></div>
+  <script>
+    // Hide everything until user clicks Start Typing Now
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('allContent').style.display = 'block';
+      document.getElementById('wrapper').style.display = 'none';
+      document.getElementById('mainNav').style.display = 'flex';
+      var startBtn = document.getElementById('startTypingBtn');
+      if (startBtn) {
+        startBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('allContent').style.display = 'none';
+          document.getElementById('wrapper').style.display = 'block';
+          document.getElementById('mainNav').style.display = 'none';
+          // Optionally scroll to game
+          setTimeout(function(){
+            document.getElementById('wrapper').scrollIntoView({behavior:'smooth'});
+          }, 50);
+        });
+      }
+    });
+    // Show/hide privacy and terms modals
+    document.addEventListener('DOMContentLoaded', function() {
+      function showModal(modalId) {
+        var modal = document.getElementById(modalId);
+        if (modal) modal.style.display = 'flex';
+      }
+      function hideModal(modalId) {
+        var modal = document.getElementById(modalId);
+        if (modal) modal.style.display = 'none';
+      }
+      // Landing page buttons
+      var privacyBtn = document.getElementById('showPrivacy');
+      var termsBtn = document.getElementById('showTerms');
+      // Navbar buttons
+      var privacyBtnNav = document.getElementById('showPrivacyNav');
+      var termsBtnNav = document.getElementById('showTermsNav');
+      // Modals
+      var privacyModal = document.getElementById('privacy');
+      var termsModal = document.getElementById('terms');
+      var closePrivacy = document.getElementById('closePrivacy');
+      var closeTerms = document.getElementById('closeTerms');
+      if (privacyBtn) privacyBtn.addEventListener('click', function() { showModal('privacy'); });
+      if (termsBtn) termsBtn.addEventListener('click', function() { showModal('terms'); });
+      if (privacyBtnNav) privacyBtnNav.addEventListener('click', function() { showModal('privacy'); });
+      if (termsBtnNav) termsBtnNav.addEventListener('click', function() { showModal('terms'); });
+      if (closePrivacy) closePrivacy.addEventListener('click', function() { hideModal('privacy'); });
+      if (closeTerms) closeTerms.addEventListener('click', function() { hideModal('terms'); });
+      // Hide modal on background click
+      if (privacyModal) {
+        privacyModal.addEventListener('click', function(e) {
+          if (e.target === privacyModal) privacyModal.style.display = 'none';
+        });
+      }
+      if (termsModal) {
+        termsModal.addEventListener('click', function(e) {
+          if (e.target === termsModal) termsModal.style.display = 'none';
+        });
+      }
+    });
+    let gameOver = false;
+    const bodyEl = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    const lightIcon = document.getElementById('lightIcon');
+    const darkIcon = document.getElementById('darkIcon');
+    const themeLabel = document.getElementById('themeLabel');
+    themeToggle.addEventListener('click', () => {
+      const isDark = bodyEl.getAttribute('data-theme') === 'dark';
+      bodyEl.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      lightIcon.style.display = isDark ? 'inline' : 'none';
+      darkIcon.style.display = isDark ? 'none' : 'inline';
+      themeLabel.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    });
+    const difficulty = document.getElementById('difficulty'), startBtn = document.getElementById('startBtn');
+    const typingArea = document.getElementById('typingArea'), currentKey = document.getElementById('currentKey');
+    const timerEl = document.getElementById('timer'), livesEl = document.getElementById('lives');
+    const scoreEl = document.getElementById('score'), highScoreEl = document.getElementById('highScore');
+    const pauseBtn = document.getElementById('pauseBtn'), resumeBtn = document.getElementById('resumeBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const tutorialBtn = document.getElementById('tutorialBtn'), overlay = document.getElementById('tutorialOverlay');
+    const tutorialText = document.getElementById('tutorialText'), tutorialNext = document.getElementById('tutorialNext');
+    let timeLimit, remaining, timerId, lives, score, highScore = 0, paused=false, activeKey, streak=0;
+    // QWERTY layout
+    const qwertyRows = [
+      ['Q','W','E','R','T','Y','U','I','O','P'],
+      ['A','S','D','F','G','H','J','K','L'],
+      ['Z','X','C','V','B','N','M']
+    ];
+    // On-screen keyboard rendering
+    function renderKeyboard() {
+      const kb = document.getElementById('onscreenKeyboard');
+      kb.innerHTML = '';
+      qwertyRows.forEach((row, i) => {
+        const rowDiv = document.createElement('div');
+        rowDiv.style.display = 'flex';
+        rowDiv.style.justifyContent = 'center';
+        rowDiv.style.marginBottom = '2px';
+        rowDiv.style.marginLeft = '0';
+        row.forEach(k => {
+          const btn = document.createElement('div');
+          btn.textContent = k;
+          btn.className = 'kb-key';
+          btn.setAttribute('data-key', k);
+          rowDiv.appendChild(btn);
+        });
+        kb.appendChild(rowDiv);
+      });
+    }
+    function highlightKey(key) {
+      document.querySelectorAll('.kb-key').forEach(el => {
+        if (el.getAttribute('data-key') === key) {
+          el.classList.add('kb-highlight');
+        } else {
+          el.classList.remove('kb-highlight');
+        }
+      });
+    }
+    // Satisfying animated background
+    function animateBg() {
+      const bg = document.getElementById('satisfyingBg');
+      bg.innerHTML = '';
+      for (let i = 0; i < 18; i++) {
+        const wave = document.createElement('div');
+        wave.style.position = 'absolute';
+        wave.style.left = (i * 6) + 'vw';
+        wave.style.top = '0';
+        wave.style.width = '8vw';
+        wave.style.height = '100vh';
+        wave.style.background = 'linear-gradient(120deg, var(--accent), var(--card-bg) 80%)';
+        wave.style.opacity = '0.08';
+        wave.style.borderRadius = '40vw';
+        wave.style.filter = 'blur(18px)';
+        wave.style.animation = `waveMove${i} 6s infinite linear alternate`;
+        bg.appendChild(wave);
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes waveMove${i} { 0%{transform:translateY(0);} 100%{transform:translateY(${Math.random()*60+20}px);} }`;
+        document.head.appendChild(style);
+      }
+    }
+    animateBg();
+    // Sound effects
+    function playSound(id) {
+      const audio = document.getElementById(id);
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play();
+        audio.volume = 0.55;
+      }
+    }
+    const tutorialSteps=[
+      'Welcome to Typing Trainer! Choose your difficulty and start.',
+      'A letter will appear; type it as quickly as you can.',
+      'Watch your Time, Lives, and Score.',
+      'Press Pause to stop the timer, then Resume.',
+      'Try to beat your high score!'
+    ]; let step=0;
+    function getHighScoreKey() {
+      return 'typingHighScore_' + difficulty.value;
+    }
+    function loadHighScore() {
+      highScore = parseInt(localStorage.getItem(getHighScoreKey()) || '0', 10);
+    }
+    function updateHigh() {
+      if(score > highScore) {
+        highScore = score;
+        localStorage.setItem(getHighScoreKey(), highScore);
+        showEncouragement();
+      }
+    }
+    function updateStats(id){
+      let timeDisplay = '--';
+      if (typeof remaining === 'number' && !isNaN(remaining)) {
+        timeDisplay = `${(remaining/1000).toFixed(1)}s`;
+      }
+      timerEl.textContent = `Time:${timeDisplay}`;
+      livesEl.textContent = `Lives:${lives}`;
+      scoreEl.textContent = `Score:${score}`;
+      highScoreEl.textContent = `High:${highScore}`;
+      if(id){ document.getElementById(id).classList.add('highlight'); setTimeout(()=>document.getElementById(id).classList.remove('highlight'),400); }
+    }
+    function getAllQwertyKeys() {
+      return qwertyRows.flat();
+    }
+    function next(){
+      if(gameOver||lives<=0) return;
+      const allKeys = getAllQwertyKeys();
+      activeKey = allKeys[Math.floor(Math.random() * allKeys.length)];
+      currentKey.textContent = activeKey;
+      highlightKey(activeKey);
+      currentKey.style.transform = 'scale(1.1)';
+      setTimeout(()=>{currentKey.style.transform = 'scale(1)';},120);
+      remaining = timeLimit;
+      updateStats();
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        if(!paused){
+          remaining -= 100;
+          if(remaining <= 0) return wrong();
+          updateStats();
+        }
+      }, 100);
+    }
+    function correct(){
+      if(gameOver) return;
+      clearInterval(timerId);
+      paused=false;
+      score++;
+      updateHigh();
+      updateStats('score');
+      playSound('soundCorrect');
+      currentKey.style.color = 'var(--success)';
+      currentKey.style.transform = 'scale(1.3)';
+      setTimeout(()=>{
+        currentKey.style.color = '';
+        currentKey.style.transform = 'scale(1)';
+      },220);
+      streak++;
+      if(streak>=10){ streak=0; lives++; updateStats('lives'); playSound('soundStreak'); }
+      coins += coinMultiplier;
+      document.getElementById('coinCount').textContent = coins;
+      saveCoins();
+      saveUpgrades();
+      animateCoinGain();
+      // Show encouragement every 3 correct
+      if (score % 3 === 0) showEncouragement();
+      // Climb sky
+      climbSky(2);
+      // Quests
+      questState.streak = (questState.streak||0)+1;
+      questState.totalCorrect = (questState.totalCorrect||0)+1;
+      questState.score = score;
+      questState.coins = coins;
+      questState.coinMultiplier = coinMultiplier;
+      // Fast 10 correct keys in under 15 seconds
+      const now = Date.now();
+      fastTenTimestamps.push(now);
+      if (fastTenTimestamps.length > 10) fastTenTimestamps.shift();
+      if (fastTenTimestamps.length === 10 && (fastTenTimestamps[9] - fastTenTimestamps[0]) <= 15000) {
+        questState.fastTenStreak = 10;
+      } else {
+        questState.fastTenStreak = fastTenTimestamps.length === 10 ? 9 : fastTenTimestamps.length;
+      }
+      // Unique 5 keys in a row quest
+      lastFiveKeys.push(activeKey);
+      if (lastFiveKeys.length > 5) lastFiveKeys.shift();
+      const uniqueKeys = new Set(lastFiveKeys);
+      questState.uniqueFiveStreak = uniqueKeys.size === 5 ? 5 : uniqueKeys.size;
+      // Type 20 correct keys in 15 seconds quest
+      if (quest.text && quest.text.includes('Type 20 correct keys in 15 seconds!')) {
+        if (twentyFastStreak === 0) {
+          twentyFastStart = Date.now();
+        }
+        twentyFastStreak++;
+        if (Date.now() - twentyFastStart > 15000) {
+          twentyFastStreak = 1;
+          twentyFastStart = Date.now();
+        }
+        questState.twentyFastStreak = twentyFastStreak;
+        if (twentyFastStreak >= 20) {
+          twentyFastStreak = 0;
+          twentyFastStart = null;
+        }
+      }
+      showEncouragement();
+      climbSky(2);
+      checkQuest();
+      next(); // Always call next to show a new random letter
+    }
+    function wrong(){
+      if(gameOver) return;
+      clearInterval(timerId);
+      lives--;
+      playSound('soundWrong');
+      updateStats('lives');
+      currentKey.style.color = 'var(--error)';
+      currentKey.style.transform = 'scale(0.8)';
+      setTimeout(()=>{
+        currentKey.style.color = '';
+        currentKey.style.transform = 'scale(1)';
+      },220);
+      if(lives<=0) endGame();
+      else next();
+    }
+    function endGame(){
+      gameOver=true;
+      clearInterval(timerId);
+      currentKey.textContent='Game Over';
+      currentKey.style.background='var(--error)';
+      highlightKey('');
+      currentKey.style.color = 'var(--error)';
+      currentKey.style.transform = 'scale(1.4)';
+      setTimeout(()=>{
+        currentKey.style.color = '';
+        currentKey.style.transform = 'scale(1)';
+      },600);
+      hideCoinBar();
+    }
+    function startGame(){
+      gameOver=false;
+      const diff=difficulty.value;
+      timeLimit=diff==='easy'?2500:diff==='medium'?1500:750;
+      lives=5; score=0; streak=0; paused=false;
+      loadHighScore();
+      typingArea.style.display='flex'; startBtn.style.display='none'; pauseBtn.style.display='inline-block'; resumeBtn.style.display='none'; restartBtn.style.display='inline-block'; currentKey.style.background='';
+      renderKeyboard();
+      remaining = timeLimit;
+      // Set a valid key before first next()
+      const allKeys = getAllQwertyKeys();
+      activeKey = allKeys[Math.floor(Math.random() * allKeys.length)];
+      currentKey.textContent = activeKey;
+      highlightKey(activeKey);
+      updateStats();
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        if(!paused){
+          remaining -= 100;
+          if(remaining <= 0) return wrong();
+          updateStats();
+        }
+      }, 100);
+      showCoinBar();
+      loadCoins();
+      loadUpgrades();
+      renderSkyBg();
+      dailyStreak = 0;
+      checkDailyChallenge();
+      renderPowerUps();
+    }
+    startBtn.addEventListener('click', startGame);
+    difficulty.addEventListener('change', () => {
+      score = 0;
+      streak = 0;
+      lives = 5;
+      // Set timeLimit based on difficulty
+      if (difficulty.value === 'easy') timeLimit = 2500;
+      else if (difficulty.value === 'medium') timeLimit = 1500;
+      else timeLimit = 750;
+      remaining = timeLimit;
+      loadHighScore();
+      updateStats();
+      playSound('soundStreak'); // satisfying sound on difficulty change
+    });
+    restartBtn.addEventListener('click', ()=>{ clearInterval(timerId); startGame(); });
+    pauseBtn.addEventListener('click', ()=>{ paused=true; pauseBtn.style.display='none'; resumeBtn.style.display='inline-block'; });
+    resumeBtn.addEventListener('click', ()=>{ paused=false; resumeBtn.style.display='none'; pauseBtn.style.display='inline-block'; });
+    window.addEventListener('keydown', e=>{ if(!activeKey||paused||gameOver) return; const k=e.key.toUpperCase(); if(/^[A-Z]$/.test(k)){ k===activeKey?correct():wrong(); }});
+    tutorialBtn.addEventListener('click', ()=>{ step=0; tutorialText.textContent=tutorialSteps[0]; overlay.style.display='flex'; });
+    tutorialNext.addEventListener('click', ()=>{ step++; if(step<tutorialSteps.length){ tutorialText.textContent=tutorialSteps[step]; } else overlay.style.display='none'; });
+    // Remove gradient background on load
+    window.addEventListener('DOMContentLoaded', function() {
+      var bg = document.getElementById('satisfyingBg');
+      if(bg) bg.style.display = 'none';
+    });
+    // Add more polish: sound on pause/resume/restart
+    pauseBtn.addEventListener('click', ()=>{ playSound('soundStreak'); });
+    resumeBtn.addEventListener('click', ()=>{ playSound('soundStreak'); });
+    restartBtn.addEventListener('click', ()=>{ playSound('soundStreak'); });
+    const style = document.createElement('style');
+style.innerHTML = `
+  #onscreenKeyboard {
+    background: var(--keyboard-bg);
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 4px 3px;
+    min-height: 32px;
+    margin-bottom: 8px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .kb-key {
+    width: 18px;
+    height: 22px;
+    margin: 2px;
+    background: var(--key-bg);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins',sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--fg);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    transition: background 0.2s, color 0.2s;
+    user-select: none;
+  }
+  .kb-key.kb-highlight {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--accent);
+  }
+  @media (max-width: 700px) {
+    #onscreenKeyboard {
+      max-width: 98vw;
+      min-height: 24px;
+      padding: 2px 1px;
+    }
+    .kb-key {
+      width: 13px;
+      height: 15px;
+      font-size: 0.7rem;
+    }
+  }
+  @media (max-width: 430px) {
+    #onscreenKeyboard {
+      max-width: 100vw;
+      min-height: 14px;
+      padding: 1px 0;
+    }
+    .kb-key {
+      width: 9px;
+      height: 10px;
+      font-size: 0.6rem;
+    }
+  }
+`;
+document.head.appendChild(style);
+let coins = 0;
+function loadCoins() {
+  coins = parseInt(localStorage.getItem('typingCoins') || '0', 10);
+  document.getElementById('coinCount').textContent = coins;
+}
+function saveCoins() {
+  localStorage.setItem('typingCoins', coins);
+}
+function showCoinBar() {
+  document.getElementById('coinBar').style.display = 'flex';
+}
+function hideCoinBar() {
+  document.getElementById('coinBar').style.display = 'none';
+}
+function animateCoinGain() {
+  const icon = document.getElementById('coinIcon');
+  icon.style.transform = 'scale(1.4)';
+  icon.style.transition = 'transform 0.2s';
+  setTimeout(()=>{ icon.style.transform = 'scale(1)'; }, 220);
+}
+window.addEventListener('DOMContentLoaded', function() {
+  loadCoins();
+  loadUpgrades();
+  document.getElementById('buyUpgrade').textContent = `Upgrade: +1 Coin per Correct (${coinUpgradePrice} coins)`;
+  document.getElementById('coinBar').style.display = 'none';
+});
+let coinMultiplier = 1;
+let coinUpgradePrice = parseInt(localStorage.getItem('typingCoinUpgradePrice') || '100', 10);
+function loadUpgrades() {
+  coinMultiplier = parseInt(localStorage.getItem('typingCoinMultiplier') || '1', 10);
+}
+function saveUpgrades() {
+  localStorage.setItem('typingCoinMultiplier', coinMultiplier);
+  localStorage.setItem('typingCoinUpgradePrice', coinUpgradePrice);
+}
+document.getElementById('buyLife').addEventListener('click', function() {
+  if (coins >= 20) {
+    coins -= 20;
+    lives++;
+    questState.livesBought = (questState.livesBought||0)+1;
+    saveCoins();
+    document.getElementById('coinCount').textContent = coins;
+    document.getElementById('shopCoinCount').textContent = coins;
+    updateStats('lives');
+    document.getElementById('shopMsg').textContent = 'You upgraded your lives!';
+    checkQuest();
+  } else {
+    document.getElementById('shopMsg').textContent = 'Not enough coins.';
+  }
+});
+document.getElementById('buyUpgrade').addEventListener('click', function() {
+  if (coins >= coinUpgradePrice) {
+    coins -= coinUpgradePrice;
+    coinMultiplier++;
+    coinUpgradePrice += 100;
+    questState.upgrades = (questState.upgrades||0)+1;
+    saveCoins();
+    saveUpgrades();
+    document.getElementById('coinCount').textContent = coins;
+    document.getElementById('shopCoinCount').textContent = coins;
+    document.getElementById('buyUpgrade').textContent = `Upgrade: +1 Coin per Correct (${coinUpgradePrice} coins)`;
+    document.getElementById('shopMsg').textContent = `Upgrade purchased! Coin gain per correct: x${coinMultiplier}`;
+    checkQuest();
+  } else {
+    document.getElementById('shopMsg').textContent = 'Not enough coins.';
+  }
+});
+window.addEventListener('DOMContentLoaded', function() {
+  loadCoins();
+  loadUpgrades();
+  document.getElementById('buyUpgrade').textContent = `Upgrade: +1 Coin per Correct (${coinUpgradePrice} coins)`;
+  document.getElementById('coinBar').style.display = 'none';
+});
+    // --- CLOUD SKY BACKGROUND ---
+const cloudTypes = [
+  [[0,0,1],[1,0,0.8],[0.5,0.5,0.6]],
+  [[0,0,1],[0.7,-0.3,0.7],[0.3,0.7,0.5]],
+  [[0,0,1],[1.2,0.2,0.7],[0.7,-0.4,0.5]]
+];
+function spawnCloud() {
+  const sky = document.getElementById('skyBg');
+  const type = cloudTypes[Math.floor(Math.random()*cloudTypes.length)];
+  const cloud = document.createElement('div');
+  cloud.className = 'cloud';
+  cloud.style.position = 'absolute';
+  cloud.style.left = (Math.random()*90)+'vw';
+  cloud.style.top = (Math.random()*80)+'vh';
+  cloud.style.zIndex = -1;
+  cloud.dataset.speed = (0.5+Math.random()).toFixed(2);
+  type.forEach(([x,y,r],i) => {
+    const circ = document.createElement('div');
+    circ.style.position = 'absolute';
+    circ.style.left = (x*40)+'px';
+    circ.style.top = (y*30)+'px';
+    circ.style.width = (r*60)+'px';
+    circ.style.height = (r*40)+'px';
+    circ.style.background = 'rgba(255,255,255,0.85)';
+    circ.style.borderRadius = '50%';
+    circ.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)';
+    cloud.appendChild(circ);
+  });
+  sky.appendChild(cloud);
+}
+function renderSkyBg() {
+  const sky = document.getElementById('skyBg');
+  sky.innerHTML = '';
+  sky.style.background = 'linear-gradient(to top, #87ceeb 0%, #e0f7fa 100%)';
+  for(let i=0;i<12;i++) spawnCloud();
+}
+function climbSky(amount) {
+  const sky = document.getElementById('skyBg');
+  Array.from(sky.children).forEach(cloud => {
+    let top = parseFloat(cloud.style.top);
+    let speed = parseFloat(cloud.dataset.speed);
+    let newTop = top-amount*speed;
+    cloud.style.top = newTop+'vh';
+    if(newTop < -20) {
+      cloud.remove();
+      spawnCloud();
+    }
+  });
+}
+renderSkyBg();
+// --- QUESTS ---
+const questTypes = [
+  {text:"Type 30 correct in a row!", check:(s)=>s.streak>=30, goal:30, key:'streak'},
+  {text:"Earn 200 coins!", check:(s)=>s.coins>=200, goal:200, key:'coins'},
+  {text:"Buy 2 upgrades!", check:(s)=>s.upgrades>=2, goal:2, key:'upgrades'},
+  {text:"Reach 50 score!", check:(s)=>s.score>=50, goal:50, key:'score'},
+  {text:"Type 20 correct keys in 15 seconds!", check:(s)=>s.twentyFastStreak>=20, goal:20, key:'twentyFastStreak'},
+  {text:"Buy 1 extra life!", check:(s)=>s.livesBought>=1, goal:1, key:'livesBought'},
+  {text:"Reach 3 lives!", check:(s)=>s.lives>=3, goal:3, key:'lives'},
+  {text:"Type 100 correct total!", check:(s)=>s.totalCorrect>=100, goal:100, key:'totalCorrect'},
+  {text:"Type 5 different keys in a row without repeats!", check:(s)=>s.uniqueFiveStreak>=5, goal:5, key:'upgrades'},
+  {text:"Reach 5 upgrades!", check:(s)=>s.upgrades>=5, goal:5, key:'upgrades'},
+  {text:"Type 25 correct with no mistakes!", check:(s)=>s.noMissStreak>=25, goal:25, key:'noMissStreak'},
+  {text:"Reach 100 score!", check:(s)=>s.score>=100, goal:100, key:'score'},
+  {text:"Buy 3 extra lives!", check:(s)=>s.livesBought>=3, goal:3, key:'livesBought'},
+  {text:"Type 50 correct in a row!", check:(s)=>s.streak>=50, goal:50, key:'streak'},
+];
+let level = parseInt(localStorage.getItem('typingLevel')||'1',10);
+let questIndex = (level-1)%questTypes.length;
+let quest = questTypes[questIndex];
+let questState = {};
+// Track timestamps for last 10 correct keys
+let fastTenTimestamps = [];
+// Track last 5 correct keys for unique streak quest
+let lastFiveKeys = [];
+function saveLevel() { localStorage.setItem('typingLevel',level); }
+function showQuestBar() {
+  document.getElementById('questText').textContent = quest.text;
+  document.getElementById('levelText').textContent = 'Level '+level;
+  document.getElementById('questStatus').textContent = '';
+  document.getElementById('questBar').style.transform = 'translateY(0)';
+}
+function completeQuest() {
+  document.getElementById('questStatus').textContent = '✔';
+  document.getElementById('questStatus').style.color = 'var(--success)';
+  document.getElementById('questBar').style.transform = 'translateY(-80px)';
+  updateProgressBar(0, 1); // Reset progress bar
+  setTimeout(()=>{
+    level++;
+    saveLevel();
+    questIndex = (level-1)%questTypes.length;
+    quest = questTypes[questIndex];
+    showQuestBar();
+    document.getElementById('questBar').style.transform = 'translateY(80px)';
+    setTimeout(()=>{ document.getElementById('questBar').style.transform = 'translateY(0)'; }, 400);
+  }, 700);
+}
+function checkQuest() {
+  if(quest.check(questState)) completeQuest();
+  else updateProgressBar(questState[quest.key]||0, quest.goal);
+  // For 20 fast streak, reset bar if time exceeded
+  if (quest.text && quest.text.includes('Type 20 correct keys in 15 seconds!')) {
+    if (twentyFastStreak > 0 && Date.now() - twentyFastStart > 15000) {
+      twentyFastStreak = 0;
+      twentyFastStart = null;
+      questState.twentyFastStreak = 0;
+      updateProgressBar(0, 20);
+    }
+  }
+}
+showQuestBar();
+function updateProgressBar(current, goal) {
+  const fill = document.getElementById('progressFill');
+  let percent = Math.min(100, Math.round((current/goal)*100));
+  fill.style.width = percent+'%';
+}
+// --- ENCOURAGEMENT MESSAGES ---
+const encouragements = [
+  "Awesome!", "Keep going!", "You're on fire!", "Unstoppable!", "Legendary!", "Epic streak!", "Superb!", "Amazing!", "Insane!", "Master Typer!"
+];
+function showEncouragement() {
+  const msg = encouragements[Math.floor(Math.random()*encouragements.length)];
+  const popup = document.createElement('div');
+  popup.textContent = msg;
+  popup.style.position = 'fixed';
+  popup.style.left = (Math.random()*80)+'vw';
+  let safeLeft = Math.random() < 0.5 ? Math.random()*20 : 60+Math.random()*20; // 0-20vw or 60-80vw
+  popup.style.left = safeLeft+'vw';
+  popup.style.top = (10+Math.random()*70)+'vh';
+  popup.style.background = 'var(--accent)';
+  popup.style.color = '#fff';
+  popup.style.fontSize = '1.3rem';
+  popup.style.fontWeight = '700';
+  popup.style.padding = '10px 22px';
+  popup.style.borderRadius = '18px';
+  popup.style.boxShadow = '0 4px 24px rgba(0,0,0,0.18)';
+  popup.style.zIndex = 3000;
+  popup.style.opacity = '0.95';
+  popup.style.transform = 'scale(0.7)';
+  popup.style.transition = 'transform 0.3s, opacity 0.7s';
+  document.body.appendChild(popup);
+  setTimeout(()=>{ popup.style.transform = 'scale(1.1)'; }, 50);
+  setTimeout(()=>{ popup.style.opacity = '0'; popup.style.transform = 'scale(0.5)'; }, 1200);
+  setTimeout(()=>{ if (popup.parentNode) popup.parentNode.removeChild(popup); }, 1800);
+}
+// --- GAME LOGIC HOOKS ---
+function correct(){
+  if(gameOver) return;
+  clearInterval(timerId);
+  paused=false;
+  score++;
+  updateHigh();
+  updateStats('score');
+  playSound('soundCorrect');
+  currentKey.style.color = 'var(--success)';
+  currentKey.style.transform = 'scale(1.3)';
+  setTimeout(()=>{
+    currentKey.style.color = '';
+    currentKey.style.transform = 'scale(1)';
+  },220);
+  streak++;
+  if(streak>=10){ streak=0; lives++; updateStats('lives'); playSound('soundStreak'); }
+  coins += coinMultiplier;
+  document.getElementById('coinCount').textContent = coins;
+  saveCoins();
+  saveUpgrades();
+  animateCoinGain();
+  // Show encouragement every 3 correct
+  if (score % 3 === 0) showEncouragement();
+  // Climb sky
+  climbSky(2);
+  // Quests
+  questState.streak = (questState.streak||0)+1;
+  questState.totalCorrect = (questState.totalCorrect||0)+1;
+  questState.score = score;
+  questState.coins = coins;
+  questState.coinMultiplier = coinMultiplier;
+  // Fast 10 correct keys in under 15 seconds
+  const now = Date.now();
+  fastTenTimestamps.push(now);
+  if (fastTenTimestamps.length > 10) fastTenTimestamps.shift();
+  if (fastTenTimestamps.length === 10 && (fastTenTimestamps[9] - fastTenTimestamps[0]) <= 15000) {
+    questState.fastTenStreak = 10;
+  } else {
+    questState.fastTenStreak = fastTenTimestamps.length === 10 ? 9 : fastTenTimestamps.length;
+  }
+  // Unique 5 keys in a row quest
+  lastFiveKeys.push(activeKey);
+  if (lastFiveKeys.length > 5) lastFiveKeys.shift();
+  const uniqueKeys = new Set(lastFiveKeys);
+  questState.uniqueFiveStreak = uniqueKeys.size === 5 ? 5 : uniqueKeys.size;
+  // Type 20 correct keys in 15 seconds quest
+  if (quest.text && quest.text.includes('Type 20 correct keys in 15 seconds!')) {
+    if (twentyFastStreak === 0) {
+      twentyFastStart = Date.now();
+    }
+    twentyFastStreak++;
+    if (Date.now() - twentyFastStart > 15000) {
+      twentyFastStreak = 1;
+      twentyFastStart = Date.now();
+    }
+    questState.twentyFastStreak = twentyFastStreak;
+    if (twentyFastStreak >= 20) {
+      twentyFastStreak = 0;
+      twentyFastStart = null;
+    }
+  }
+  showEncouragement();
+  climbSky(2);
+  checkQuest();
+  next(); // Always call next to show a new random letter
+}
+document.getElementById('buyUpgrade').addEventListener('click', function() {
+  if (coins >= coinUpgradePrice) {
+    coins -= coinUpgradePrice;
+    coinMultiplier++;
+    coinUpgradePrice += 100;
+    questState.upgrades = (questState.upgrades||0)+1;
+    saveCoins();
+    saveUpgrades();
+    document.getElementById('coinCount').textContent = coins;
+    document.getElementById('shopCoinCount').textContent = coins;
+    document.getElementById('buyUpgrade').textContent = `Upgrade: +1 Coin per Correct (${coinUpgradePrice} coins)`;
+    document.getElementById('shopMsg').textContent = `Upgrade purchased! Coin gain per correct: x${coinMultiplier}`;
+    checkQuest();
+  } else {
+    document.getElementById('shopMsg').textContent = 'Not enough coins.';
+  }
+});
+document.getElementById('buyLife').addEventListener('click', function() {
+  if (coins >= 20) {
+    coins -= 20;
+    lives++;
+    questState.livesBought = (questState.livesBought||0)+1;
+    saveCoins();
+    document.getElementById('coinCount').textContent = coins;
+    document.getElementById('shopCoinCount').textContent = coins;
+    updateStats('lives');
+    document.getElementById('shopMsg').textContent = 'You upgraded your lives!';
+    checkQuest();
+  } else {
+    document.getElementById('shopMsg').textContent = 'Not enough coins.';
+  }
+});
+window.addEventListener('DOMContentLoaded', function() {
+  loadCoins();
+  loadUpgrades();
+  document.getElementById('buyUpgrade').textContent = `Upgrade: +1 Coin per Correct (${coinUpgradePrice} coins)`;
+  document.getElementById('coinBar').style.display = 'none';
+});
+const coinBar = document.getElementById('coinBar');
+coinBar.onclick = function() {
+  document.getElementById('shopModal').style.display = 'flex';
+  document.getElementById('shopCoinCount').textContent = coins;
+  document.getElementById('shopMsg').textContent = '';
+};
+document.getElementById('closeShop').onclick = function() {
+  document.getElementById('shopModal').style.display = 'none';
+};
+/* Center quest bar horizontally using flexbox */
+  </script>
+</body>
+</html>
