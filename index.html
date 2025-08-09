@@ -1035,10 +1035,9 @@ function climbSky(amount) {
 renderSkyBg();
 // --- QUESTS ---
 const questTypes = [
-  {text:"Type 500 correct in a row!", check:(s)=>s.streak>=500, goal:500, key:'streak'},
-  {text:"Reach 200 score!", check:(s)=>s.score>=200, goal:200, key:'score'},
-  {text:"Type 200 correct in a row!", check:(s)=>s.streak>=200, goal:200, key:'streak'},
-  {text:"Type 5 different keys in a row without repeats!", check:(s)=>s.uniqueFiveStreak>=5, goal:5, key:'upgrades'},
+  {text:"Type 75 correct in a row!", check:(s)=>s.streak>=75, goal:75, key:'streak'},
+  {text:"Type 150 correct in a row!", check:(s)=>s.streak>=200, goal:200, key:'streak'},
+  {text:"Type 5 different keys in a row!", check:(s)=>s.uniqueFiveStreak>=5, goal:5, key:'streak'},
   {text:"Type 50 correct in a row!", check:(s)=>s.streak>=50, goal:50, key:'streak'},
   {text:"Type 100 correct in a row!", check:(s)=>s.streak>=100, goal:100, key:'streak'},
 ];
