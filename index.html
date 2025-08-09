@@ -1033,88 +1033,16 @@ function climbSky(amount) {
   });
 }
 renderSkyBg();
-// Track dynamic quest goals in localStorage so they persist across reloads
-let upgradesQuestGoal = parseInt(localStorage.getItem('upgradesQuestGoal') || '5', 10);
-let streakQuestGoal = parseInt(localStorage.getItem('streakQuestGoal') || '50', 10);
-let keysNoMistakeGoal = parseInt(localStorage.getItem('keysNoMistakeGoal') || '5', 10);
-
+// --- QUESTS ---
 const questTypes = [
-  {text:`Buy ${upgradesQuestGoal} upgrades!`, check:(s)=>s.upgrades>=upgradesQuestGoal, goal:upgradesQuestGoal, key:'upgrades', type:'upgrades'},
-  {text:`Type ${streakQuestGoal} correct in a row!`, check:(s)=>s.streak>=streakQuestGoal, goal:streakQuestGoal, key:'streak', type:'streak'},
-  {text:"Reach 200 score!", check:(s)=>s.score>=200, goal:200, key:'score', type:'fixed'},
-  {text:`Type ${keysNoMistakeGoal} keys with no mistakes!`, check:(s)=>s.keysNoMistake>=keysNoMistakeGoal, goal:keysNoMistakeGoal, key:'keysNoMistake', type:'keysNoMistake'},
+  {text:"Type 500 correct in a row!", check:(s)=>s.streak>=500, goal:500, key:'streak'},
+  {text:"Buy 20 upgrades!", check:(s)=>s.upgrades>=2, goal:2, key:'upgrades'},
+  {text:"Reach 200 score!", check:(s)=>s.score>=200, goal:200, key:'score'},
+  {text:"Type 200 correct in a row!", check:(s)=>s.streak>=200, goal:200, key:'streak'},
+  {text:"Type 5 different keys in a row without repeats!", check:(s)=>s.uniqueFiveStreak>=5, goal:5, key:'upgrades'},
+  {text:"Type 50 correct in a row!", check:(s)=>s.streak>=50, goal:50, key:'streak'},
+  {text:"Type 100 correct in a row!", check:(s)=>s.streak>=100, goal:100, key:'streak'},
 ];
-
-let level = parseInt(localStorage.getItem('typingLevel')||'1',10);
-let questIndex = (level-1)%questTypes.length;
-let quest = questTypes[questIndex];
-let questState = {};
-// Track timestamps for last 10 correct keys
-let fastTenTimestamps = [];
-// Track last 5 correct keys for unique streak quest
-let lastFiveKeys = [];
-// Track session coins for 'Earn 200 coins' quest
-let sessionCoins = 0;
-function saveLevel() { localStorage.setItem('typingLevel',level); }
-function showQuestBar() {
-  document.getElementById('questText').textContent = quest.text;
-  document.getElementById('levelText').textContent = 'Level '+level;
-  document.getElementById('questStatus').textContent = '';
-  document.getElementById('questBar').style.transform = 'translateY(0)';
-}
-function completeQuest() {
-  updateProgressBar(0, 1); // Reset progress bar
-  document.getElementById('questStatus').textContent = '✔';
-  document.getElementById('questStatus').style.color = 'var(--success)';
-  document.getElementById('questBar').style.transform = 'translateY(-80px)';
-  setTimeout(()=>{
-    level++;
-    saveLevel();
-
-    // Progress the quest goals for next time
-    if (quest.type === 'upgrades') {
-      upgradesQuestGoal++;
-      localStorage.setItem('upgradesQuestGoal', upgradesQuestGoal);
-    }
-    if (quest.type === 'streak') {
-      streakQuestGoal += 10;
-      localStorage.setItem('streakQuestGoal', streakQuestGoal);
-    }
-    if (quest.type === 'keysNoMistake') {
-      keysNoMistakeGoal += 5;
-      localStorage.setItem('keysNoMistakeGoal', keysNoMistakeGoal);
-    }
-
-    // Update quests array with new goals
-    questTypes[0].text = `Buy ${upgradesQuestGoal} upgrades!`;
-    questTypes[0].goal = upgradesQuestGoal;
-    questTypes[1].text = `Type ${streakQuestGoal} correct in a row!`;
-    questTypes[1].goal = streakQuestGoal;
-    questTypes[3].text = `Type ${keysNoMistakeGoal} keys with no mistakes!`;
-    questTypes[3].goal = keysNoMistakeGoal;
-
-    questIndex = (level-1)%questTypes.length;
-    quest = questTypes[questIndex];
-    showQuestBar();
-    document.getElementById('questBar').style.transform = 'translateY(80px)';
-    setTimeout(()=>{ document.getElementById('questBar').style.transform = 'translateY(0)'; }, 400);
-  }, 700);
-}
-
-// In your game logic, track keys with no mistakes for the new quest
-// Update in correct() and wrong()
-function correct() {
-  // ...existing correct logic...
-  // For "keys with no mistakes"
-  questState.keysNoMistake = (questState.keysNoMistake||0)+1;
-  // ...rest of correct logic...
-}
-
-function wrong() {
-  // ...existing wrong logic...
-  questState.keysNoMistake = 0;
-  // ...rest of wrong logic...
-}
 let level = parseInt(localStorage.getItem('typingLevel')||'1',10);
 let questIndex = (level-1)%questTypes.length;
 let quest = questTypes[questIndex];
@@ -1335,3 +1263,10 @@ document.getElementById('closeShop').onclick = function() {
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
