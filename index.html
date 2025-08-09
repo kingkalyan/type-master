@@ -739,26 +739,18 @@
       if (lastFiveKeys.length > 5) lastFiveKeys.shift();
       const uniqueKeys = new Set(lastFiveKeys);
       questState.uniqueFiveStreak = uniqueKeys.size === 5 ? 5 : uniqueKeys.size;
-      // Type 20 correct keys in 15 seconds quest
-      if (quest.text && quest.text.includes('Type 20 correct keys in 15 seconds!')) {
-        if (twentyFastStreak === 0) {
-          twentyFastStart = Date.now();
-        }
-        twentyFastStreak++;
-        if (Date.now() - twentyFastStart > 15000) {
-          twentyFastStreak = 1;
-          twentyFastStart = Date.now();
-        }
-        questState.twentyFastStreak = twentyFastStreak;
-        if (twentyFastStreak >= 20) {
-          twentyFastStreak = 0;
-          twentyFastStart = null;
-        }
+      // 'In a row' quests: update streak, reset on wrong
+      if (quest.text && quest.text.includes('in a row')) {
+        questState.streak = (questState.streak||0)+1;
+      }
+      // Earn 200 coins quest
+      if (quest.text && quest.text.includes('Earn 200 coins!')) {
+        questState.coins = sessionCoins;
       }
       showEncouragement();
       climbSky(2);
       checkQuest();
-      next(); // Always call next to show a new random letter
+      next();
     }
     function wrong(){
       if(gameOver) return;
@@ -774,6 +766,11 @@
       },220);
       if(lives<=0) endGame();
       else next();
+      // Reset streak/bar for 'in a row' quests
+      if (quest.text && quest.text.includes('in a row')) {
+        questState.streak = 0;
+        updateProgressBar(0, quest.goal);
+      }
     }
     function endGame(){
       gameOver=true;
@@ -798,6 +795,7 @@
       typingArea.style.display='flex'; startBtn.style.display='none'; pauseBtn.style.display='inline-block'; resumeBtn.style.display='none'; restartBtn.style.display='inline-block'; currentKey.style.background='';
       renderKeyboard();
       remaining = timeLimit;
+      sessionCoins = 0;
       // Set a valid key before first next()
       const allKeys = getAllQwertyKeys();
       activeKey = allKeys[Math.floor(Math.random() * allKeys.length)];
@@ -951,6 +949,7 @@ document.getElementById('buyLife').addEventListener('click', function() {
     coins -= 20;
     lives++;
     questState.livesBought = (questState.livesBought||0)+1;
+    questState.upgrades = (questState.upgrades||0)+1; // Count as upgrade for quests
     saveCoins();
     document.getElementById('coinCount').textContent = coins;
     document.getElementById('shopCoinCount').textContent = coins;
@@ -1037,19 +1036,13 @@ renderSkyBg();
 // --- QUESTS ---
 const questTypes = [
   {text:"Type 30 correct in a row!", check:(s)=>s.streak>=30, goal:30, key:'streak'},
-  {text:"Earn 200 coins!", check:(s)=>s.coins>=200, goal:200, key:'coins'},
   {text:"Buy 2 upgrades!", check:(s)=>s.upgrades>=2, goal:2, key:'upgrades'},
-  {text:"Reach 50 score!", check:(s)=>s.score>=50, goal:50, key:'score'},
-  {text:"Type 20 correct keys in 15 seconds!", check:(s)=>s.twentyFastStreak>=20, goal:20, key:'twentyFastStreak'},
-  {text:"Buy 1 extra life!", check:(s)=>s.livesBought>=1, goal:1, key:'livesBought'},
-  {text:"Reach 3 lives!", check:(s)=>s.lives>=3, goal:3, key:'lives'},
+  {text:"Reach 200 score!", check:(s)=>s.score>=50, goal:50, key:'score'},
   {text:"Type 100 correct total!", check:(s)=>s.totalCorrect>=100, goal:100, key:'totalCorrect'},
   {text:"Type 5 different keys in a row without repeats!", check:(s)=>s.uniqueFiveStreak>=5, goal:5, key:'upgrades'},
   {text:"Reach 5 upgrades!", check:(s)=>s.upgrades>=5, goal:5, key:'upgrades'},
-  {text:"Type 25 correct with no mistakes!", check:(s)=>s.noMissStreak>=25, goal:25, key:'noMissStreak'},
-  {text:"Reach 100 score!", check:(s)=>s.score>=100, goal:100, key:'score'},
-  {text:"Buy 3 extra lives!", check:(s)=>s.livesBought>=3, goal:3, key:'livesBought'},
   {text:"Type 50 correct in a row!", check:(s)=>s.streak>=50, goal:50, key:'streak'},
+  {text:"Type 100 correct in a row!", check:(s)=>s.streak>=100, goal:100, key:'streak'},
 ];
 let level = parseInt(localStorage.getItem('typingLevel')||'1',10);
 let questIndex = (level-1)%questTypes.length;
@@ -1059,6 +1052,8 @@ let questState = {};
 let fastTenTimestamps = [];
 // Track last 5 correct keys for unique streak quest
 let lastFiveKeys = [];
+// Track session coins for 'Earn 200 coins' quest
+let sessionCoins = 0;
 function saveLevel() { localStorage.setItem('typingLevel',level); }
 function showQuestBar() {
   document.getElementById('questText').textContent = quest.text;
@@ -1067,10 +1062,10 @@ function showQuestBar() {
   document.getElementById('questBar').style.transform = 'translateY(0)';
 }
 function completeQuest() {
+  updateProgressBar(0, 1); // Reset progress bar
   document.getElementById('questStatus').textContent = '✔';
   document.getElementById('questStatus').style.color = 'var(--success)';
   document.getElementById('questBar').style.transform = 'translateY(-80px)';
-  updateProgressBar(0, 1); // Reset progress bar
   setTimeout(()=>{
     level++;
     saveLevel();
@@ -1082,16 +1077,25 @@ function completeQuest() {
   }, 700);
 }
 function checkQuest() {
-  if(quest.check(questState)) completeQuest();
-  else updateProgressBar(questState[quest.key]||0, quest.goal);
-  // For 20 fast streak, reset bar if time exceeded
-  if (quest.text && quest.text.includes('Type 20 correct keys in 15 seconds!')) {
-    if (twentyFastStreak > 0 && Date.now() - twentyFastStart > 15000) {
-      twentyFastStreak = 0;
-      twentyFastStart = null;
-      questState.twentyFastStreak = 0;
-      updateProgressBar(0, 20);
-    }
+  // Only update progress for the current quest type
+  let current = 0, goal = quest.goal;
+  if (quest.key && questState[quest.key] !== undefined) {
+    current = questState[quest.key];
+  }
+  // Special handling for streak/in-a-row quests
+  if (quest.text && quest.text.includes('in a row')) {
+    current = questState.streak || 0;
+  }
+  // Special handling for earn coins quest
+  if (quest.text && quest.text.includes('Earn 200 coins!')) {
+    current = sessionCoins;
+  }
+  // Clamp current to goal
+  current = Math.max(0, Math.min(current, goal));
+  updateProgressBar(current, goal);
+  // Only claim quest if current >= goal
+  if (current >= goal && quest.check(questState)) {
+    completeQuest();
   }
 }
 showQuestBar();
@@ -1175,27 +1179,55 @@ function correct(){
   if (lastFiveKeys.length > 5) lastFiveKeys.shift();
   const uniqueKeys = new Set(lastFiveKeys);
   questState.uniqueFiveStreak = uniqueKeys.size === 5 ? 5 : uniqueKeys.size;
-  // Type 20 correct keys in 15 seconds quest
-  if (quest.text && quest.text.includes('Type 20 correct keys in 15 seconds!')) {
-    if (twentyFastStreak === 0) {
-      twentyFastStart = Date.now();
-    }
-    twentyFastStreak++;
-    if (Date.now() - twentyFastStart > 15000) {
-      twentyFastStreak = 1;
-      twentyFastStart = Date.now();
-    }
-    questState.twentyFastStreak = twentyFastStreak;
-    if (twentyFastStreak >= 20) {
-      twentyFastStreak = 0;
-      twentyFastStart = null;
-    }
+  // 'In a row' quests: update streak, reset on wrong
+  if (quest.text && quest.text.includes('in a row')) {
+    questState.streak = (questState.streak||0)+1;
+  }
+  // Earn 200 coins quest
+  if (quest.text && quest.text.includes('Earn 200 coins!')) {
+    questState.coins = sessionCoins;
   }
   showEncouragement();
   climbSky(2);
   checkQuest();
-  next(); // Always call next to show a new random letter
+  next();
 }
+function wrong(){
+  if(gameOver) return;
+  clearInterval(timerId);
+  lives--;
+  playSound('soundWrong');
+  updateStats('lives');
+  currentKey.style.color = 'var(--error)';
+  currentKey.style.transform = 'scale(0.8)';
+  setTimeout(()=>{
+    currentKey.style.color = '';
+    currentKey.style.transform = 'scale(1)';
+  },220);
+  if(lives<=0) endGame();
+  else next();
+  // Reset streak/bar for 'in a row' quests
+  if (quest.text && quest.text.includes('in a row')) {
+    questState.streak = 0;
+    updateProgressBar(0, quest.goal);
+  }
+}
+document.getElementById('buyLife').addEventListener('click', function() {
+  if (coins >= 20) {
+    coins -= 20;
+    lives++;
+    questState.livesBought = (questState.livesBought||0)+1;
+    questState.upgrades = (questState.upgrades||0)+1; // Count as upgrade for quests
+    saveCoins();
+    document.getElementById('coinCount').textContent = coins;
+    document.getElementById('shopCoinCount').textContent = coins;
+    updateStats('lives');
+    document.getElementById('shopMsg').textContent = 'You upgraded your lives!';
+    checkQuest();
+  } else {
+    document.getElementById('shopMsg').textContent = 'Not enough coins.';
+  }
+});
 document.getElementById('buyUpgrade').addEventListener('click', function() {
   if (coins >= coinUpgradePrice) {
     coins -= coinUpgradePrice;
@@ -1208,21 +1240,6 @@ document.getElementById('buyUpgrade').addEventListener('click', function() {
     document.getElementById('shopCoinCount').textContent = coins;
     document.getElementById('buyUpgrade').textContent = `Upgrade: +1 Coin per Correct (${coinUpgradePrice} coins)`;
     document.getElementById('shopMsg').textContent = `Upgrade purchased! Coin gain per correct: x${coinMultiplier}`;
-    checkQuest();
-  } else {
-    document.getElementById('shopMsg').textContent = 'Not enough coins.';
-  }
-});
-document.getElementById('buyLife').addEventListener('click', function() {
-  if (coins >= 20) {
-    coins -= 20;
-    lives++;
-    questState.livesBought = (questState.livesBought||0)+1;
-    saveCoins();
-    document.getElementById('coinCount').textContent = coins;
-    document.getElementById('shopCoinCount').textContent = coins;
-    updateStats('lives');
-    document.getElementById('shopMsg').textContent = 'You upgraded your lives!';
     checkQuest();
   } else {
     document.getElementById('shopMsg').textContent = 'Not enough coins.';
