@@ -1,126 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7685800619803476"
-     crossorigin="anonymous">
-  </script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Just Tapping's Fun House</title>
-  <meta name="description" content="Just Tapping's Fun House - The most fun typing game and landing experience!" />
-  <meta name="keywords" content="typing game, fun house, keyboard, tapping, privacy, terms" />
-  <meta name="author" content="Just Tapping" />
-  <link rel="icon" href="favicon-16x16.png" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    body, html {
-      height: 100vh; width: 100vw;
-      font-family: 'Poppins', sans-serif;
-      background: #f4f6f8;
-      color: #333;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      margin: 0;
-    }
-    .container {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      padding: 48px 32px;
-      max-width: 420px;
-      text-align: center;
-      margin-top: 32px;
-    }
-    h1 {
-      font-size: 2.3rem;
-      font-weight: 700;
-      margin-bottom: 18px;
-      color: #0077cc;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 32px;
-      color: #444;
-    }
-    .fun-btn {
-      background: linear-gradient(135deg, #4e72d7, #7b9afe);
-      color: #fff;
-      font-weight: 700;
-      font-size: 1.15rem;
-      border: none;
-      border-radius: 10px;
-      padding: 16px 36px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-      cursor: pointer;
-      margin-bottom: 24px;
-      transition: background 0.2s, transform 0.1s;
-      text-decoration: none;
-      display: inline-block;
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-    .fun-btn:hover {
-      background: linear-gradient(135deg, #4e72d7, #7b9afe);
-      transform: scale(1.05);
-    }
-    .policy-link {
-      color: #0077cc;
-      text-decoration: underline;
-      font-size: 1rem;
-      margin: 0 8px;
-      cursor: pointer;
-    }
-    .footer {
-      margin-top: 32px;
-      font-size: 0.95rem;
-      color: #888;
-    }
-    @media (max-width: 500px) {
-      .container { padding: 24px 8px; }
-      h1 { font-size: 1.5rem; }
-      p { font-size: 1rem; }
-      .fun-btn { font-size: 1rem; padding: 12px 18px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schooly</title>
+    <!-- Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
-  <div class="container">
-    <h1>Just Tapping's Fun House</h1>
-    <p>Welcome to the most fun place on the internet! There are many games coming soon!</p>
-    <a href="type.html" class="fun-btn">Type Master</a>
-    <a href="schooly.html" class="fun-btn">Upcoming!</a>
-    <div>
-      <span class="policy-link" onclick="document.getElementById('privacyModal').style.display='block'">Privacy Policy</span>
-      <span class="policy-link" onclick="document.getElementById('termsModal').style.display='block'">Terms of Service</span>
+    <!-- Navigation Sidebar -->
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <div class="nav-item active" onclick="showSection('dashboard')" title="Dashboard">
+            <i class="fas fa-home"></i>
+            <span class="nav-label">Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="showSection('create-task')" title="Add Task">
+            <i class="fas fa-plus-circle"></i>
+            <span class="nav-label">Add Task</span>
+        </div>
+        <div class="nav-item" onclick="showSection('tutoring')" title="Tutoring">
+            <i class="fas fa-graduation-cap"></i>
+            <span class="nav-label">Tutoring</span>
+        </div>
+        <div class="nav-item" onclick="showSection('leaderboard')" title="Leaderboard">
+            <i class="fas fa-trophy"></i>
+            <span class="nav-label">Leaderboard</span>
+        </div>
+        <div class="nav-item" onclick="showSection('calendar')" title="Calendar">
+            <i class="fas fa-calendar-alt"></i>
+            <span class="nav-label">Calendar</span>
+        </div>
+        <div class="nav-item" onclick="showSection('behavior')" title="Give Behavior Points">
+            <i class="fas fa-heart"></i>
+            <span class="nav-label">Behavior</span>
+        </div>
+        <div class="nav-item" onclick="showSection('messages')" title="Messages">
+            <i class="fas fa-envelope"></i>
+            <span class="nav-label">Messages</span>
+        </div>
+        <div class="nav-item" onclick="showSection('profile')" title="My Profile">
+            <i class="fas fa-user"></i>
+            <span class="nav-label">Profile</span>
+        </div>
+        <div class="nav-item" onclick="logout()" title="Logout" style="margin-top: auto;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="nav-label">Logout</span>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div id="app-container" class="w-full">
+            <!-- Login Screen -->
+            <div id="login-screen" class="login-container">
+                <div class="card p-8 shadow-xl max-w-md w-full">
+                    <h1 class="text-4xl text-center font-extrabold mb-6" style="color: var(--primary-green);">🎯
+                        Schooly</h1>
+                    <p class="text-center text-sm mb-6" style="color: var(--neutral-gray);">Gamified Learning Platform
+                    </p>
+                    <form id="login-form" onsubmit="handleLogin(event)">
+                        <div class="mb-4">
+                            <label for="email" class="block font-bold mb-2"
+                                style="color: var(--dark-gray);">Email:</label>
+                            <input type="email" id="email" value="alice@school.edu" required class="w-full">
+                        </div>
+                        <div class="mb-6">
+                            <label for="password" class="block font-bold mb-2"
+                                style="color: var(--dark-gray);">Password:</label>
+                            <input type="password" id="password" value="pass" required class="w-full">
+                        </div>
+                        <button type="submit" class="btn-primary w-full">🚀 Start Learning</button>
+                        <div id="login-message" class="mt-4 text-center font-semibold hidden"
+                            style="color: var(--accent-red);"></div>
+                    </form>
+
+                    <div class="mt-6 p-4 rounded-lg"
+                        style="background: var(--light-gray); border: 2px solid var(--primary-green);">
+                        <p class="font-bold mb-2" style="color: var(--dark-gray);">🎮 Demo Accounts:</p>
+                        <ul class="text-sm space-y-1">
+                            <li><strong>Student:</strong> <code>alice@school.edu</code></li>
+                            <li><strong>Teacher:</strong> <code>ms.smith@school.edu</code></li>
+                            <li><strong>Admin:</strong> <code>admin@school.edu</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role-Specific Dashboards (Will be populated by JS) -->
+            <div id="student-dashboard" class="hidden"></div>
+            <div id="teacher-dashboard" class="hidden"></div>
+            <div id="admin-dashboard" class="hidden"></div>
+        </div>
     </div>
-  </div>
-  <div class="footer">Made by Koundinya Namuduri</div>
-  <!-- Privacy Modal -->
-  <div id="privacyModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:32px 24px;border-radius:12px;max-width:400px;width:90vw;box-shadow:0 4px 24px rgba(0,0,0,0.18);position:relative;">
-      <button onclick="document.getElementById('privacyModal').style.display='none'" aria-label="Close" style="position:absolute;top:12px;right:16px;font-size:1.5rem;background:none;border:none;cursor:pointer;color:#333;">&times;</button>
-      <h2 style="font-size:1.3rem;font-weight:600;margin-bottom:12px;">Privacy Policy</h2>
-      <div style="font-size:1rem;line-height:1.7;color:#333;background:#f0f4fb;padding:18px 12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-        <p><strong>Just Tapping's Fun House</strong> does not collect any personal information. Your scores and progress are stored locally in your browser and are never sent to any server. We do not use cookies or tracking technologies. By using this site, you agree to this privacy policy.</p>
-      </div>
-    </div>
-  </div>
-  <!-- Terms Modal -->
-  <div id="termsModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:32px 24px;border-radius:12px;max-width:400px;width:90vw;box-shadow:0 4px 24px rgba(0,0,0,0.18);position:relative;">
-      <button onclick="document.getElementById('termsModal').style.display='none'" aria-label="Close" style="position:absolute;top:12px;right:16px;font-size:1.5rem;background:none;border:none;cursor:pointer;color:#333;">&times;</button>
-      <h2 style="font-size:1.3rem;font-weight:600;margin-bottom:12px;">Terms of Service</h2>
-      <div style="font-size:1rem;line-height:1.7;color:#333;background:#f0f4fb;padding:18px 12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-        <p>By using <strong>Just Tapping's Fun House</strong>, you agree to use this site for personal, non-commercial purposes only. The game and content are provided as-is, without warranty of any kind. We are not responsible for any loss or damage resulting from the use of this site. You may not copy, modify, or redistribute the content without permission.</p>
-      </div>
-    </div>
-  </div>
+
+    <div id="toast-container"></div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
-
