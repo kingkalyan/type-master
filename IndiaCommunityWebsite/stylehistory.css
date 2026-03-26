@@ -1,0 +1,222 @@
+/* History Hero */
+.historyEmblem {
+    height: 150px;
+    width: auto;
+    margin: 15px;
+}
+
+.historyHeroNote {
+    font-size: 18px;
+    text-align: center;
+    max-width: 650px;
+    margin-top: 10px;
+    font-style: italic;
+    color: #3a2800;
+}
+
+.historyTitle {
+    font-size: 72px;
+    font-weight: 700;
+    background: linear-gradient(84deg, #261d00 0%, #815d09 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 6px;
+}
+
+/* Textured intro section */
+.history-intro-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 2000px;
+    max-width: 2000px;
+    margin: 0;
+    padding: 50px 20px;
+}
+
+.history-intro-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+.history-intro-row {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 900px;
+}
+
+.history-intro-col {
+    flex: 1;
+    max-width: 400px;
+}
+
+.history-intro-col h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1b1200;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.history-intro-col p {
+    font-size: 13px;
+    line-height: 22px;
+    color: #1b1200;
+    text-align: left;
+}
+
+/* Cream background for empire sections */
+.history-empire-section {
+    width: 100%;
+    max-width: 2000px;
+    background-color: #FFECC3;
+    display: flex;
+    justify-content: center;
+    box-shadow: inset 0 10px 8px rgba(0, 0, 0, 0.08), inset 0 -10px 10px rgba(0, 0, 0, 0.132);
+    padding: 0;
+    z-index: 2;
+}
+
+.history-empire-section-2 {
+    width: 100%;
+    max-width: 2000px;
+    display: flex;
+    background-color: #FFE19F;
+    justify-content: center;
+    box-shadow: inset 0 10px 8px rgba(0, 0, 0, 0.132), inset 0 -10px 12px rgba(0, 0, 0, 0.137);
+    padding: 0;
+    z-index: 2;
+}
+
+.history-content-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 40px 20px;
+    gap: 20px;
+}
+
+.history-section-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1b1200;
+    text-align: center;
+}
+
+.history-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.history-row.reverse {
+    flex-direction: row-reverse;
+}
+
+.history-text-block {
+    flex: 1;
+    max-width: 420px;
+}
+
+.history-text-block p {
+    font-size: 13px;
+    line-height: 22px;
+    color: #1b1200;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.history-image-block {
+    flex: 1;
+    max-width: 200px;
+    text-align: center;
+}
+
+.history-img {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.history-img-caption {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 6px;
+    color: #3a2800;
+    font-style: italic;
+    line-height: 18px;
+}
+
+/* Textured Important People section */
+.important-people-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 2000px;
+    max-width: 2000px;
+    margin: 0;
+    padding: 50px 20px;
+    background: rgba(255, 255, 255, 0.027) url(img/SandstoneTexture1.avif);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224);
+}
+
+.important-people-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: rgba(255, 251, 226, 0.6);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224), 0 4px 8px rgba(0, 0, 0, 0.199);
+    z-index: 0;
+}
+
+.important-people-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+.people-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1100px;
+}
+
+.person-card {
+    padding: 20px 16px;
+    width: 230px;
+    background: linear-gradient(180deg, #FFEABC 0%, #F1BF6F 100%);
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.25), inset 0px -6px 10px rgba(0, 0, 0, 0.2), inset 0 3px 6px hsla(46, 100%, 13%, 0.12);
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+}
+
+.person-card-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1b1200;
+}
+
+.person-card p {
+    font-size: 13px;
+    line-height: 20px;
+    color: #2a1800;
+}

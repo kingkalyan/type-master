@@ -1,0 +1,180 @@
+/* Hero subtitle */
+.ref-hero-subtitle {
+    font-size: 28px;
+    font-weight: 600;
+    font-style: italic;
+    color: #3a2800;
+    margin-top: 6px;
+    text-align: center;
+}
+
+/* Intro text */
+.orgs-intro-text {
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    max-width: 800px;
+    color: #1b1200;
+}
+
+/* Organizations section — glance-grid style sandstone texture */
+.orgs-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 2000px;
+    max-width: 2000px;
+    margin: 0;
+    padding: 50px 20px;
+    background: rgba(255, 255, 255, 0.027) url(img/SandstoneTexture1.avif);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224);
+}
+
+.orgs-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: rgba(255, 251, 226, 0.6);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224), 0 4px 8px rgba(0, 0, 0, 0.199);
+    z-index: 0;
+}
+
+.orgs-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+.org-cards-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.org-card {
+    width: 280px;
+    padding: 22px 18px;
+    background: linear-gradient(180deg, #FFEABC 0%, #F1BF6F 100%);
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.4), inset 0px -6px 10px rgba(0, 0, 0, 0.2), inset 0 3px 6px hsla(46, 100%, 13%, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.org-card-logo {
+    height: 70px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+}
+
+.org-card-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1b1200;
+    line-height: 20px;
+}
+
+.org-card p {
+    font-size: 12px;
+    line-height: 20px;
+    color: #2a1800;
+}
+
+/* More orgs text */
+.more-orgs-text {
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    max-width: 800px;
+    color: #1b1200;
+}
+
+/* Reference header section */
+.ref-header-section {
+    padding: 40px 20px 20px;
+}
+
+.reference-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #1b1200;
+    text-align: center;
+    font-style: italic;
+}
+
+.reference-subtitle {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1b1200;
+    text-align: center;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* Citations section — textured background */
+.citations-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    width: 2000px;
+    max-width: 2000px;
+    margin: 0;
+    padding: 50px 20px;
+    background: rgba(255, 255, 255, 0.027) url(img/SandstoneTexture1.avif);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224);
+}
+
+.citations-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: rgba(255, 251, 226, 0.6);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224), 0 4px 8px rgba(0, 0, 0, 0.199);
+    z-index: 0;
+}
+
+.citations-section > * {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+}
+
+.citations-heading {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1b1200;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.citation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.citation-item {
+    font-size: 13px;
+    line-height: 22px;
+    color: #1b1200;
+    padding: 5px 0 5px 2em;
+    text-indent: -2em;
+    border-bottom: 1px solid rgba(139, 100, 20, 0.12);
+}
+
+.citation-item:last-child {
+    border-bottom: none;
+}

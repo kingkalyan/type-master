@@ -1,0 +1,415 @@
+body {
+    overflow-x: hidden;
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fff8ddb5 0%, #ffeaa7a0 55%, #ffeaaa9d 100%), url(img/SandstoneTexture1.avif), repeat;
+  font-family: "Playfair Display", serif;
+  color: #1b1200;
+  position: relative;
+  overflow: hidden;
+}
+
+#navbarSpanTitle {
+    margin: 10px;
+    width: 90px;
+}
+
+.brand-img {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    width: 80px;
+    height: auto;
+}
+
+.branding {
+    border: none;
+    font-family: "Playfair Display-Bold";
+    width: 170px;
+    padding: 0px;
+    background-color: hsla(38, 16%, 13%, 0.15);
+    box-shadow: inset 0 -4px 4px hsla(0, 0%, 0%, 0.15), inset 0 4px 4px rgba(206, 192, 161, 0.568);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.branding:hover {
+  cursor:pointer;
+}
+
+/* Sections */
+section {
+  width: 100%;
+  max-width: 1200px;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hero Styles */
+.hero-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 96px;
+  font-weight: 700;
+  background: linear-gradient(84deg, #261d00 0%, #815d09 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle-container {
+  display: flex;
+  align-items: center;
+}
+
+.hero-content {
+    background: linear-gradient(180deg, hsla(38, 100%, 92%, 0.60) 0%, hsl(41, 100%, 78%, .60) 100%), url(/img/SandstoneTexture1.avif), repeat-x;
+    padding: 50px 50px;
+    width: 100%;
+    max-width: 1440px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: inset 0 -4px 4px rgba(0, 0, 0, 0.30);
+    margin-bottom: 0px;
+    z-index: 1;
+}
+
+.hero-subtitle {
+  font-size: 48px;
+  margin: 5px;
+  background: linear-gradient(90deg, #251b00 0%, #4c3000 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 6px 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  max-width: 1440px;
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  z-index: 2;
+  background: linear-gradient(180deg, #f0e5ca 0%, #f6e0b9 100%);
+  box-shadow: 0px 8px 12px rgba(31, 27, 0, 0.297), inset 0px -2px 6px #0f0c002f;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-item {
+  background: #fff9e2;
+  padding: 18px 20px;
+  border-radius: 8px;
+  color: #000;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: inset 0px -4px 4px rgba(25, 20, 10, 0.251), 0 1px 4px rgba(0, 0, 0, 0.10);
+  transition: filter 0.15s;
+}
+
+.nav-item:hover {
+  filter: brightness(1.1);
+}
+
+/* Grid Logic (Neater Cards) */
+.card-grid, .glance-grid {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  margin-top: 40px;
+  justify-content: center;
+}
+
+.info-card, .glance-card {
+  padding: 20px 10px 40px 10px;
+  width: 250px;
+  background: linear-gradient(180deg, #ffedc9 0%, #e4c787 100%);
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.25), inset 0px -8px 12px rgba(0, 0, 0, 0.25), inset 0 4px 8px hsla(46, 100%, 13%, 0.15);
+  line-height: 1.6;
+  font-size: x-large;
+}
+
+
+.info-card ul, .glance-card ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    padding-left: 0;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.info-card li, .glance-card li {
+    margin-bottom: 8px;
+    display: list-item;
+}
+
+.glance-card {
+    padding: 10px 5px 10px 10px;
+    height: 350px;
+    width: 250px;
+    background: linear-gradient(#FFEABC, #F1BF6F);
+    font-size: medium;
+}
+
+.glance-grid {
+    background: rgba(255, 255, 255, 0.027) url(img/SandstoneTexture1.avif);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224);
+    width: 2000px;
+    margin: 0px;
+    height: 600px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+}
+
+.glance-grid::before {
+    content: "";
+    position: absolute;
+    background: rgba(255, 251, 226, 0.6);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224), 0 4px 8px rgba(0, 0, 0, 0.199);
+    width: 2000px;
+    height: 600px;
+    z-index: 1.1;
+}
+
+.glance-column-container {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    justify-content: center;
+    z-index: 5;
+    margin: 20px;
+}
+
+.column-text-hover {
+    font-size: xx-large;
+    margin: 20px;
+    text-align: center;
+}
+
+.goldZariBorder {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0;
+    display: flex;
+    position: relative; 
+    z-index: 5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); 
+}
+
+.goldZariBorderElement {
+    height: 48px;
+    flex: 1;
+    background-image: url(img/GoldZariBorder.png);
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    box-shadow: inset 0px -4px 4px hsla(50, 75%, 11%, 0.523), 
+                inset 0px 4px 4px rgba(255, 255, 255, 0.2);
+}
+
+.goldZariBorderElement2 {
+    height: 48px;
+    flex: 1;
+    transform: scaleX(-1);
+    background-image: url(img/GoldZariBorder.png);
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    box-shadow: inset 0px -4px 4px hsla(50, 75%, 11%, 0.523), 
+                inset 0px 4px 4px rgba(255, 251, 231, 0.2);
+    margin-left: -1px;
+}
+
+/* Content Rows (US Section) */
+.content-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 10px 0 60px 0;
+    text-align: center;
+}
+
+.content-row.reverse {
+    flex-direction: row-reverse;
+}
+
+.image-block {
+    flex: 1;
+    text-align: center;
+}
+
+.image-block img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.gold-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #1b1200;
+  margin-bottom: 30px;
+  z-index: 4;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 1000;
+  margin-bottom: -20px;
+  z-index: 4;
+}
+
+.impact-text {
+    font-size: x-large;
+    width: 360px;
+    text-align: center;
+    line-height: 40px;
+    z-index: 3;
+}
+
+.whiteBlur {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.earthBackgroundImg::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 400px;
+    background: url(img/EarthImage.png);
+    left: 0px;
+    background-repeat: no-repeat;
+}
+
+.whiteBlur::after {
+    content: "";
+    width: 700px;
+    height: 450px;
+    background-color: rgba(255, 255, 255, 0.703);
+    filter: blur(100px);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.indian-border-vertical {
+    display: flex;
+    position: absolute;
+    top: 0;
+    width: 100vh;
+    z-index: 0;
+}
+
+.indian-border-vertical img {
+    height: 75px;
+    width: auto;
+    display: block;
+    opacity: .35;
+    filter: brightness(75%);
+}
+
+.indian-border-vertical.left {
+    left: 0;
+    transform-origin: top left;
+    transform: rotate(90deg) translateY(-100%);
+}
+
+.indian-border-vertical.right {
+    right: 0;
+    flex-direction: row-reverse;
+    transform-origin: top right;
+    transform: rotate(-90deg) translateY(-100%);
+}
+
+.diaspora-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 2000px;
+    max-width: 2000px;
+    margin: 0;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.027) url(img/SandstoneTexture1.avif);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224);
+}
+
+.diaspora-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: rgba(255, 251, 226, 0.6);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224), 0 4px 8px rgba(0, 0, 0, 0.199);
+    z-index: 0;
+}
+
+.diaspora-section > * {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 800px;
+}
+
+.caption {
+  margin: 10px;
+  width: auto;
+}
+
+.homePageImages {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+}
+
+.text-block {
+  width: 300px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.contentTitleBold {
+  font-weight: bolder;
+  font-size: xx-large;
+  line-height: 30px;
+  margin: 5px;
+}
+
+.indiaEmblem {
+  margin-right: 15px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

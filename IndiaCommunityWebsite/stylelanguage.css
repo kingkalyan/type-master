@@ -1,0 +1,279 @@
+/* Languages preview image in hero */
+.languagesPreviewImg {
+    max-width: 650px;
+    width: 100%;
+    height: auto;
+    margin-top: 8px;
+}
+
+/* Textured intro section */
+.language-intro-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 2000px;
+    max-width: 2000px;
+    margin: 0;
+    padding: 50px 20px;
+}
+
+.language-intro-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+.language-intro-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+.scriptNoteBox {
+    margin-bottom: 32px;
+    max-width: 800px;
+    text-align: center;
+}
+
+.scriptNote {
+    font-size: 15px;
+    color: #1b1200;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Three-column + map row */
+.language-intro-row {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.language-intro-col {
+    flex: 1;
+    max-width: 300px;
+}
+
+.language-intro-col h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1b1200;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.language-intro-col p {
+    font-size: 12px;
+    line-height: 20px;
+    color: #1b1200;
+    text-align: center;
+}
+
+.language-map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.language-map-img {
+    max-width: 240px;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.language-map-caption {
+    font-size: 11px;
+    text-align: center;
+    margin-top: 6px;
+    color: #3a2800;
+    font-style: italic;
+    max-width: 240px;
+    line-height: 16px;
+}
+
+/* Combined facts wrapper — glance-grid style sandstone texture */
+.language-facts-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 2000px;
+    max-width: 2000px;
+    margin: 0;
+    position: relative;
+    background: rgba(255, 255, 255, 0.027) url(img/SandstoneTexture1.avif);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224);
+}
+
+.language-facts-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: rgba(255, 251, 226, 0.6);
+    box-shadow: inset 0 8px 12px rgba(71, 46, 6, 0.224), inset 0 -8px 12px rgba(23, 14, 0, 0.224), 0 4px 8px rgba(0, 0, 0, 0.199);
+    z-index: 0;
+}
+
+.language-facts-wrapper > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Individual facts sections inside the wrapper */
+.language-facts-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 2000px;
+    margin: 0;
+    padding: 50px 20px;
+}
+
+.facts-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1b1200;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.facts-cards-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1100px;
+}
+
+.facts-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.facts-column-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #1b1200;
+}
+
+.language-card {
+    padding: 14px 12px;
+    width: 230px;
+    min-height: 180px;
+    background: linear-gradient(180deg, #FFEABC 0%, #F1BF6F 100%);
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.2), inset 0px -6px 10px rgba(0, 0, 0, 0.2), inset 0 3px 6px hsla(46, 100%, 13%, 0.12);
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+.language-card ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    padding-left: 0;
+    text-align: left;
+    margin: 0;
+}
+
+.language-card li {
+    margin-bottom: 6px;
+    display: list-item;
+    font-size: 13px;
+    line-height: 20px;
+    color: #2a1800;
+}
+
+/* Try it out */
+.tryit-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1b1200;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.tryit-subtitle {
+    font-size: 14px;
+    color: #1b1200;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.try-it-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.try-it-input {
+    width: 100%;
+    max-width: 440px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: "Playfair Display", serif;
+    border: none;
+    background: #fffbe3;
+    color: #1b1200;
+    outline: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), inset 0px 4px 4px rgba(0, 0, 0, 0.276);
+}
+
+.try-it-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.try-it-btn {
+    padding: 20px 30px;
+    background: linear-gradient(180deg, #FFEABC 0%, #E0BF77 100%);
+    border: none;
+    color: #000000;
+    font-size: 13px;
+    font-family: "Playfair Display", serif;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 -4px 8px rgba(0, 0, 0, 0.25), inset 0 4px 4px rgba(255, 255, 255, 0.5), 0 0 6px rgba(0, 0, 0, 0.114);
+    transition: filter 0.15s;
+}
+
+.try-it-btn:hover {
+    filter: brightness(1.1);
+}
+
+.tryit-group-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #3a2800;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.try-it-output {
+    font-size: 20px;
+    color: #1b1200;
+    min-height: 28px;
+    text-align: center;
+    background-color: rgb(255, 252, 235);
+    padding: 20px 40px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), inset 0px 4px 4px rgba(0, 0, 0, 0.276);
+}

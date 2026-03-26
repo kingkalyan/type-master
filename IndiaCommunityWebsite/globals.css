@@ -1,0 +1,47 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+  text-decoration: none;
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Playfair Display-Bold", "weight": "700", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Playfair Display-Bold";
+  src: local("Playfair Display-Bold");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Playfair Display-Regular", "weight": "400", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Playfair Display-Regular";
+  src: local("Playfair Display-Regular");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Playfair Display-ExtraBold", "weight": "800", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Playfair Display-ExtraBold";
+  src: local("Playfair Display-ExtraBold");
+}
+/* @FONTWARNING[{"type": "restricted", "family": "Playfair Display-Medium", "weight": "500", "style": "normal", "allowsCrossOrigin": false}] */
+
+@font-face {
+  font-family: "Playfair Display-Medium";
+  src: local("Playfair Display-Medium");
+}
+
+@font-face {
+  font-family: "Playfair Display-Semi-Bold";
+  src: local("Playfair Display-Semi-Bold");
+}
